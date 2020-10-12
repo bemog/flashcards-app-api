@@ -28,4 +28,14 @@ router.get('/collections', async (req, res) => {
   }
 });
 
+router.delete('/collections', async (req, res) => {
+  try {
+    await Collection.findByIdAndDelete(req.query.id);
+    const collections = await Collection.find({});
+    res.status(200).send({ collections });
+  } catch (error) {
+    res.status(400).send();
+  }
+});
+
 module.exports = router;
