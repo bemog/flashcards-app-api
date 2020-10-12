@@ -1,5 +1,4 @@
 const mongoose = require('mongoose');
-const jwt = require('jsonwebtoken');
 const bcrypt = require('bcryptjs');
 
 const userSchema = new mongoose.Schema(
@@ -32,6 +31,18 @@ const userSchema = new mongoose.Schema(
   { timestamps: true }
 );
 
+userSchema.virtual('cards', {
+  ref: 'Card',
+  localField: '_id',
+  foreignField: 'owner',
+});
+
+userSchema.virtual('collections', {
+  ref: 'Collection',
+  localField: '_id',
+  foreignField: 'owner',
+});
+
 userSchema.methods.toJSON = function () {
   const user = this;
   const userObject = user.toObject();
@@ -42,15 +53,15 @@ userSchema.methods.toJSON = function () {
   return userObject;
 };
 
-userSchema.methods.generateAuthToken = async function () {
-  const user = this;
-  const token = jwt.sign({ _id: user.id.toString() }, 'thisshouldbehide');
+// userSchema.methods.generateAuthToken = async function () {
+//   const user = this;
+//   const token = jwt.sign({ _id: user.id.toString() }, 'thisshouldbehide');
 
-  user.tokens = user.tokens.concat({ token });
-  await user.save();
+//   user.tokens = user.tokens.concat({ token });
+//   await user.save();
 
-  return token;
-};
+//   return token;
+// };
 
 userSchema.statics.findByCredentials = async (name, password) => {
   const user = await User.findOne({ name });

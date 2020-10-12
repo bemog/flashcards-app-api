@@ -1,0 +1,31 @@
+const express = require('express');
+const Collection = require('../models/collection');
+const router = new express.Router();
+
+router.post('/collections', async (req, res) => {
+  const userID = req.body.userID;
+  const collection = new Collection({
+    title: req.body.title,
+    userID,
+    cards: [],
+  });
+
+  try {
+    await collection.save();
+    const collections = await Collection.find({ userID });
+    res.status(201).send({ collections });
+  } catch (error) {
+    res.status(400).send(error);
+  }
+});
+
+router.get('/collections', async (req, res) => {
+  try {
+    const collections = await Collection.find({ userID: req.query._id });
+    res.send({ collections });
+  } catch (error) {
+    res.status(500).send();
+  }
+});
+
+module.exports = router;
