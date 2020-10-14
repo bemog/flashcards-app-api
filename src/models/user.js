@@ -31,13 +31,13 @@ const userSchema = new mongoose.Schema(
   { timestamps: true }
 );
 
-userSchema.virtual('cards', {
+userSchema.virtual('cardOwner', {
   ref: 'Card',
   localField: '_id',
   foreignField: 'owner',
 });
 
-userSchema.virtual('collections', {
+userSchema.virtual('collectionOwner', {
   ref: 'Collection',
   localField: '_id',
   foreignField: 'owner',
