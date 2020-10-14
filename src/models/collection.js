@@ -1,4 +1,5 @@
 const mongoose = require('mongoose');
+const { cardSchema } = require('../models/card');
 
 const collectionSchema = new mongoose.Schema({
   title: {
@@ -11,7 +12,7 @@ const collectionSchema = new mongoose.Schema({
     trim: true,
     required: true,
   },
-  cards: [],
+  cards: [cardSchema],
 });
 
 const Collection = mongoose.model('Collection', collectionSchema);
