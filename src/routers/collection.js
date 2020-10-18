@@ -1,5 +1,6 @@
 const express = require('express');
 const Collection = require('../models/collection');
+const auth = require('../middleware/auth');
 const router = new express.Router();
 
 router.post('/collections', async (req, res) => {
@@ -19,7 +20,7 @@ router.post('/collections', async (req, res) => {
   }
 });
 
-router.get('/collections', async (req, res) => {
+router.get('/collections', auth, async (req, res) => {
   try {
     const collections = await Collection.find({ userID: req.query._id });
     res.send({ collections });
