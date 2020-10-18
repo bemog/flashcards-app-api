@@ -53,16 +53,6 @@ userSchema.methods.toJSON = function () {
   return userObject;
 };
 
-// userSchema.methods.generateAuthToken = async function () {
-//   const user = this;
-//   const token = jwt.sign({ _id: user.id.toString() }, 'thisshouldbehide');
-
-//   user.tokens = user.tokens.concat({ token });
-//   await user.save();
-
-//   return token;
-// };
-
 userSchema.statics.findByCredentials = async (name, password) => {
   const user = await User.findOne({ name });
 

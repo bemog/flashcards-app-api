@@ -3,12 +3,15 @@ const User = require('../models/user');
 const router = new express.Router();
 
 router.post('/users', async (req, res) => {
-  const user = new User(req.body);
+  const userCheck = await User.findOne({ name: req.body.name });
+  if (userCheck) {
+    return res.status(409).send();
+  }
 
+  const user = new User(req.body);
   try {
     await user.save();
-    const token = await user.generateAuthToken();
-    res.status(201).send({ user, token });
+    res.status(201).send({ user });
   } catch (error) {
     res.status(400).send(error);
   }
