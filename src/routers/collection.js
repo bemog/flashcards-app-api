@@ -5,6 +5,15 @@ const router = new express.Router();
 
 router.post('/collections', auth, async (req, res) => {
   const userID = req.user._id;
+
+  const checkCollectionTitle = await Collection.findOne({
+    title: req.body.title,
+    userID,
+  });
+  if (checkCollectionTitle) {
+    return res.status(409).send();
+  }
+
   const collection = new Collection({
     title: req.body.title,
     userID,
@@ -32,7 +41,7 @@ router.get('/collections', auth, async (req, res) => {
 router.delete('/collections', auth, async (req, res) => {
   try {
     await Collection.findByIdAndDelete(req.query.id);
-    const collections = await Collection.find({});
+    const collections = await Collection.find({ userID: req.user._id });
     res.status(200).send({ collections });
   } catch (error) {
     res.status(400).send();
