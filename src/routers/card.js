@@ -1,11 +1,13 @@
 const express = require('express');
+const router = new express.Router();
+const auth = require('../middleware/auth');
+
 const { Card } = require('../models/card');
 const Collection = require('../models/collection');
-const router = new express.Router();
 
-router.post('/cards', async (req, res) => {
+router.post('/cards', auth, async (req, res) => {
   const collection = await Collection.findOne({
-    userID: req.body.userID,
+    userID: req.user._id,
     title: req.body.title,
   });
 
@@ -23,7 +25,7 @@ router.post('/cards', async (req, res) => {
   }
 });
 
-router.delete('/cards', async (req, res) => {
+router.delete('/cards', auth, async (req, res) => {
   const id = req.query.id;
   try {
     let collection = await Collection.findOne({

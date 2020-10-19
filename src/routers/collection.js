@@ -3,8 +3,8 @@ const Collection = require('../models/collection');
 const auth = require('../middleware/auth');
 const router = new express.Router();
 
-router.post('/collections', async (req, res) => {
-  const userID = req.body.userID;
+router.post('/collections', auth, async (req, res) => {
+  const userID = req.user._id;
   const collection = new Collection({
     title: req.body.title,
     userID,
@@ -29,7 +29,7 @@ router.get('/collections', auth, async (req, res) => {
   }
 });
 
-router.delete('/collections', async (req, res) => {
+router.delete('/collections', auth, async (req, res) => {
   try {
     await Collection.findByIdAndDelete(req.query.id);
     const collections = await Collection.find({});
