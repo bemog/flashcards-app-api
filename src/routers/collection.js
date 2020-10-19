@@ -22,7 +22,7 @@ router.post('/collections', async (req, res) => {
 
 router.get('/collections', auth, async (req, res) => {
   try {
-    const collections = await Collection.find({ userID: req.query._id });
+    const collections = await Collection.find({ userID: req.user._id });
     res.send({ collections });
   } catch (error) {
     res.status(500).send();
