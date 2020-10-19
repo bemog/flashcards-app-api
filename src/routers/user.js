@@ -1,7 +1,7 @@
 const express = require('express');
-const User = require('../models/user');
 const auth = require('../middleware/auth');
 const router = new express.Router();
+const User = require('../models/user');
 
 router.post('/users', async (req, res) => {
   const userCheck = await User.findOne({ name: req.body.name });

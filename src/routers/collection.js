@@ -1,7 +1,8 @@
 const express = require('express');
-const Collection = require('../models/collection');
 const auth = require('../middleware/auth');
 const router = new express.Router();
+
+const Collection = require('../models/collection');
 
 router.post('/collections', auth, async (req, res) => {
   const userID = req.user._id;
